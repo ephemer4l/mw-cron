@@ -1,0 +1,12 @@
+#!/bin/sh
+
+touch $HOME/.config/dbus
+chmod 600 $HOME/.config/dbus
+echo $DBUS_SESSION_BUS_ADDRESS > $HOME/.config/dbus
+
+GPG_PRESET_PASS="/usr/libexec/gpg-preset-passphrase"
+KEY_GRIP="E2297B204C4886B6F1A5E3B2284EDEB7EFBE97E1"
+$GPG_PRESET_PASS -c $KEY_GRIP <<< $(pm s email-gpg)
+
+exit 0
+
