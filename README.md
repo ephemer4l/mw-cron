@@ -16,7 +16,12 @@ Note: This fix requires `pinentry-dmenu` or `pinentry-bemenu`.
 ```sh
 PASSWORD_STORE_KEY="email" pass insert automail/example@email.com
 ```
-7. run mutt-wizard to create the cron job.
+7. Edit your gpg-agent.conf to include
+```
+allow-preset-passphrase
+max-cache-ttl 2147483647
+```
+9. run mutt-wizard to create the cron job.
 ```sh
 mw -T
 ```
