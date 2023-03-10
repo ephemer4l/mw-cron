@@ -1,0 +1,11 @@
+#!/bin/sh
+
+touch $HOME/.cache/dbus
+chmod 600 $HOME/.cache/dbus
+echo $DBUS_SESSION_BUS_ADDRESS > $HOME/.cache/dbus
+
+GPG_PRESET_PASS="/usr/lib/gnupg/gpg-preset-passphrase"
+KEY_GRIP="07A6B991E96B80FDFDD487E162A85C1C431476C6"
+$GPG_PRESET_PASS -c $KEY_GRIP <<< $(pass email)
+
+exit 0
