@@ -1,9 +1,20 @@
---- mailsync	2023-03-05 13:25:48.217078154 +0300
-+++ mailsync.new	2023-03-05 13:37:04.966745220 +0300
-@@ -35,18 +35,8 @@
- case "$(uname)" in
- 	Darwin) notify() { osascript -e "display notification \"$2\" with title \"$1\"" ;} ;;
- 	*)
+--- mailsync            2023-03-05 13:25:48.217078154 +0300	
++++ mailsync.new	2024-06-21 00:47:19.054143903 +0300
+@@ -25,30 +25,14 @@
+ 	"$HOME/.pam_environment" 2>/dev/null)"
+ 
+ export GPG_TTY="$(tty)"
++export DBUS_SESSION_BUS_ADDRESS="$(cat $HOME/.cache/dbus)"
+ 
+ [ -n "$MBSYNCRC" ] && alias mbsync="mbsync -c $MBSYNCRC" || MBSYNCRC="$HOME/.mbsyncrc"
+ [ -n "$MPOPRC" ] || MPOPRC="$HOME/.config/mpop/config"
+ 
+ lastrun="${XDG_CONFIG_HOME:-$HOME/.config}/mutt/.mailsynclastrun"
+ 
+-# Settings are different for MacOS (Darwin) systems.
+-case "$(uname)" in
+-	Darwin) notify() { osascript -e "display notification \"$2\" with title \"$1\"" ;} ;;
+-	*)
 -	case "$(readlink -f /sbin/init)" in
 -		*systemd*|*openrc*) export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus ;;
 -	esac
@@ -16,8 +27,9 @@
 -			export DISPLAY="$x"
 -			notify-send --app-name="mutt-wizard" "$1" "$2"
 -		done ;}
-+	export DBUS_SESSION_BUS_ADDRESS="$(cat $HOME/.cache/dbus)"
-+	notify() { notify-send --app-name="mutt-wizard" "$1" "$2" ;}
- 	;;
- esac
+-	;;
+-esac
++notify() { notify-send --app-name="mutt-wizard" "$1" "$2" ;}
  
+ # Check account for new mail. Notify if there is new content.
+ syncandnotify() {
